@@ -9,7 +9,7 @@ with open('tinyTwitter.json', "r") as fp:
         line = fp.readline()
         j=json.loads(line[0:-2])
         id=j["meta"]["id"]
-        r=requests.put("http://130.56.248.231:5984/cloud/"+id,data='{"category":"tinyTwitter","metadata":'+line[0:-2]+'}')
+        r=requests.put("http://admin:admin@130.56.248.231:5984/cloud2/"+id,data='{"category":"tinyTwitter","metadata":'+line[0:-2]+'}')
         print r.status_code
         print r.content
 

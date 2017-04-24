@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter Sentimental Analysis</title>
+    <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="loader">
+    <div class="content">
+        <img src="{{ url_for('static', filename='img/loader.gif') }}">
+        <h4>Loading...please wait!</h4>
+    </div>
+</div>
+
+<h2 class="header">Twitter Sentimental Analysis</h2>
+<div class="btn-wrapper">
+    <input type="button" id="b" value="Scen-1" class="btn">
+    <input type="button" id="clients" value="Scen-2" class="btn">
+    <input type="button" id="politics" value="Politics" class="btn">
+</div>
+<div class="container-wrapper">
+    <div id="container">
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function(){
+        $(".loader").hide();       
+
+        $("#politics").click(function(){
+            $(".loader").show();
+					            
+             $.getJSON('/api/v1/politics/abc',function(result){
+	            drawLineSeries(result);
+	        });
+        });
+
+     });
+
+	function callBackFunction(data)
+	{
+        $("#data").text(data.rows[0].value);
+        var long  =data.rows[0].value[0];
+        var lat = data.rows[0].value[1];
+        drawChart(data.rows);
+	}
+
+
+</script>
+<script>
+
+    google.load("visualization", "1", {packages:["map","bar", "line"]});
+    
+    function drawChart(rows) {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('number','lat');
+        data.addColumn('number','long');
+        for(i=0;i<rows.length;i++)
+            data.addRow([rows[i].value[1],rows[i].value[0]]);
+
+        var options = {
+            maps: 'Map',
+            icons: {
+                default: {
+                    normal: 'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/48/Map-Marker-Ball-Azure-icon.png',
+                    selected: 'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/48/Map-Marker-Ball-Right-Azure-icon.png'
+                }
+            }
+        };
+
+        var map = new google.visualization.Map(document.getElementById('container'));
+        map.draw(data, {showTip: true});
+        $(".loader").hide();
+    }
+    function drawLine(rows){
+        var data = new google.visualization.DataTable();
+        data.addColumn('string','Source');
+        data.addColumn('number','Precentage');
+
+        for(i=0;i<rows.length;i++)
+            data.addRow([rows[i].key,rows[i].value]);
+
+        var options = {
+            title: 'Clients/Devices used for Tweet Postings',
+            width: 600,
+            height:400,
+            legend: { position: 'none' },
+            bar: { groupWidth: "90%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('container'));
+        // Convert the Classic options to Material options.
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+        $(".loader").hide();
+
+    }
+
+    function drawLinePolitics(rows){
+        var data = new google.visualization.DataTable();
+        data.addColumn('string','Source');
+        data.addColumn('number','Precentage');
+
+        for(i=0;i<rows.length;i++)
+            data.addRow([rows[i].key,rows[i].value]);
+
+        var options = {
+            title: 'Positive / Negative Analysis',
+            width: 600,
+            height:400,
+            legend: { position: 'none' },
+            bar: { groupWidth: "90%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('container'));
+        // Convert the Classic options to Material options.
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+        $(".loader").hide();
+
+    }
+    
+    
+     function drawLineSeries(rows) {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('number','Tweet Volume');
+        data.addColumn('number','Polarity');
+        for(i=0;i<rows.length;i++)
+        {
+            var d = new Date(parseInt(rows[i].date));
+            var b = new Date(d.getMonth() + "/" + d.getDay() + "/" + d.getFullYear());
+            data.addRow([i,parseFloat(rows[i].polarity)]);
+        }
+        var options = {
+            title: 'Poilitics Sentiments',
+            width: 800,
+            height:400,
+            legend: { position: 'none' },
+            bar: { groupWidth: "90%" }
+        };
+
+        var chart = new google.charts.Line(document.getElementById('container'));
+        chart.draw(data, google.charts.Line.convertOptions(options));
+        $(".loader").hide();
+    }
+
+
+</script>
+
+</body>
+</html>

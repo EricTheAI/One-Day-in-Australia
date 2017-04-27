@@ -1,0 +1,80 @@
+---
+ansible_ssh_user: ubuntu
+persist_mount: "/mnt/per"
+peer_group: "chirp"
+chirp:
+  username: "ninja"
+  password: "chichichi"
+couchdb:
+  version: 1.6.1
+  src: "/home/couchdb/src/couchdb"
+  dest: "/home/couchdb/opt/couchdb"
+  database_dir: "{{ persist_mount }}/couchdb"
+  ini: "local.ini.j2"
+  repo: "git://github.com/apache/couchdb.git"
+  host: "0.0.0.0"
+  port: 5984
+  peruser_version: 1.0.1
+  peruser_src: "/home/couchdb/src/couchdb-1.0.1"
+  peruser_dst: "${couchdb.dest}/lib/couchdb/plugins/couchperuser"
+  peruser_repo: "git://github.com/etrepum/couchperuser.git"
+  rebar_version: 2.5.1
+  rebar_src: "/home/couchdb/src/rebar-2.5.1"
+  rebar_repo: "git://github.com/rebar/rebar.git"
+apache_listen_port: 8080
+apache_listen_port_ssl: 8443
+monit_port: 3737
+monit_address: "0.0.0.0"
+monit_allow: ["0.0.0.0/0.0.0.0"]
+elasticsearch_version: "1.5.1"
+elasticsearch_node_name: "elasticsearch-{{node_id}}"
+elasticsearch_cluster_name: "chirp.elasticsearch.cluster"
+elasticsearch_timezone: "Australia/Melbourne"
+elasticsearch_discovery_zen_ping_multicast_enabled: false
+elasticsearch_discovery_zen_ping_unicast_hosts: "{{groups['chirp']}}"
+elasticsearch_data_dir: "{{ persist_mount }}/elasticsearch"
+elasticsearch_plugins:
+  - { name: "royrusso/elasticsearch-HQ" }
+logstash_version: "1.5"
+logstash_defaults:
+  - directive: 'LS_HEAP_SIZE="256m"'
+logstash_packages:
+- { package: "logstash" }
+logstash_plugins:
+- { name: "logstash-input-couchdb_changes" }
+- { name: "logstash-output-elasticsearch" }
+logstash_plugins_update: false
+logstash_inputs:
+  couchdb_changes: >-
+    db => "twitter"
+logstash_outputs:
+  elasticsearch: >-
+    embedded => false
+    cluster => "{{ elasticsearch_cluster_name }}"
+    node_name => "logstash-{{ elasticsearch_node_name }}"
+    index => "logstash-%{+YYYY.MM.dd}"
+    # document_id => "%{fingerprint}"
+    action => "%{[@metadata][action]}"
+    document_id => "%{[@metadata][_id]}"
+kibana_version: "4.0.2"
+apps:
+  - name: "debug-app"
+    cmd: "python /opt/deploy/debug-app.py -t 0.0.0.0 -p 7000"
+    cwd: "/opt/deploy/cwd"
+    port: 7000
+    prefix: "deb"
+  - name: "twitter-sampler"
+    cmd: "python /opt/deploy/twitter-machine-sampler.py"
+    cwd: "/opt/deploy/cwd"
+    port: 9999 # Fake number, as sampler does not have a web monitor yet.
+    prefix: "har"
+  - name: "web-service"
+    cmd: "python /opt/deploy/web-svc/webservice.py 3030"
+    cwd: "/opt/deploy/web-svc"
+    port: 3030
+    prefix: "svc"
+  - name: "analysis"
+    cmd: "python /opt/deploy/analysis/myapp.py"
+    cwd: "/opt/deploy/analysis"
+    port: 5000
+    prefix: "ana"

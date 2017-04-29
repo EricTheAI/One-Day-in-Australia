@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Cloudsent - Twitter Sentiment App</title>
+    <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/style.css') }}">
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" language="javascript" src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+    <script type="text/javascript" language="javascript" src="{{ url_for('static', filename='assets/js/jquery.transit.js') }}"></script>
+
+</head>
+<body>
+<div class="loader">
+    <div class="content">
+        <img src="{{ url_for('static', filename='assets/img/loader.gif') }}">
+        <h4>Loading...please wait!</h4>
+    </div>
+</div>
+
+<div class="global-wrapper">
+    <div class="row logo-wrapper">
+        <div class="col-lg-12">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='assets/img/logo.png') }}" />
+            </div>
+        </div>
+    </div><!--logo wrappper-->
+
+    <div class="row">
+
+    <div class="col-lg-12 search-wrapper">
+            <div class="sbox">
+                <input id="search" type="text" placeholder="search sentiments..." class="search">
+                <i class="glyphicon glyphicon-search"></i>
+            </div>
+        </div>
+
+        <div class="row circle-wrapper">
+            <div class="container">
+                <div class="col-lg-12">
+                    <div class="circle-container">
+                        <div class="circle-outer">
+                        <div class="circle" data-table="politics">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </div>
+                            <h4>Politics</h4>
+                        </div>
+
+                        <div class="circle-outer">
+                            <div class="circle" data-table="schools">
+                                <i class="glyphicon glyphicon-briefcase"></i>
+                            </div>
+                            <h4>Schools</h4>
+                        </div>
+
+                        <div class="circle-outer">
+                            <div class="circle" data-table="sports">
+                                <i class="glyphicon glyphicon-th-large"></i>
+                            </div>
+                            <h4>Sports</h4>
+                        </div>
+
+                        <div class="circle-outer">
+                        <div class="circle" data-table="food">
+                            <i class="glyphicon glyphicon-cutlery"></i>
+                        </div>
+                            <h4>Food</h4>
+                        </div>
+
+                        <div class="circle-outer">
+                        <div class="circle" data-table="clothing">
+                            <i class="glyphicon glyphicon-star"></i>
+                        </div>
+                            <h4>Clothing</h4>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<!--global wrapper-->
+
+<div class="row tbl-wrapper" id="dd">
+    <div class="container">
+
+        <h3 class="tbl-title">Present Sentiment Trending</h3>
+        <div class="col-lg-12">
+            <div class="tbl">
+                <button class="btn btn-default clear-filter" href="#"> <i class="glyphicon glyphicon-filter"></i> Clear Filter</button>
+                <table class="tbl-sent-head">
+                    <thead>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th class="center">Trending</th>
+                    <th class="center">Map</th>
+                    </thead>
+                </table>
+
+                <table class="tbl-sent politics">
+                    <tbody>
+                        <tr data-trend-view="obama" data-graph-view="obama_graph">
+                            <td class="text-group">Politics</td>
+                            <td class="text">Barack Obama</td>
+                            <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-stats"></i> View Trend</a></td>
+                            <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i> View Map</a></td>
+                        </tr>
+                        <tr data-trend-view="hillary" data-graph-view="hillary_graph">
+                            <td class="text-group">Politics</td>
+                            <td class="text">Hillary Clinton</td>
+                            <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-stats"></i> View Trend</a></td>
+                            <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i> View Map</a></td>
+                        </tr>
+                        <tr data-trend-view="baker" data-graph-view="baker_graph">
+                            <td class="text-group">Politics</td>
+                            <td class="text">Charlie Baker</td>
+                            <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-stats"></i> View Trend</a></td>
+                            <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i> View Map</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="tbl-sent schools">
+                    <thead>
+                    <thead>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    </thead>
+                    <tbody>
+                    <tr data-trend-view="mit" data-graph-view="mit_graph">
+                        <td class="text-group">Schools</td>
+                        <td class="text">Massachusetts Institute of Technology</td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-stats"></i> View Trend</a></td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i> View Map</a></td>
+                    </tr>
+                    <tr data-trend-view="harvard" data-graph-view="harvard_graph">
+                        <td class="text-group">Schools</td>
+                        <td class="text">Harvard University</td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-stats"></i> View Trend</a></td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i> View Map</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table class="tbl-sent sports">
+                    <thead>
+                    <thead>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    </thead>
+                    <tbody>
+                    <tr data-trend-view="mayweather" data-graph-view="mayweather_graph">
+                        <td class="text-group">Sports</td>
+                        <td class="text">Floyd Mayweather, Jr.</td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-stats"></i> View Trend</a></td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i> View Map</a></td>
+                    </tr>
+                    <tr data-trend-view="manny" data-graph-view="manny_graph">
+                        <td class="text-group">Schools</td>
+                        <td class="text">Manny Pacquiao</td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-stats"></i> View Trend</a></td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i> View Map</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table class="tbl-sent food">
+                    <thead>
+                    <thead>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    </thead>
+                    <tbody>
+                    <tr data-trend-view="mcdonald" data-graph-view="mcdonald_graph">
+                        <td class="text-group">Food</td>
+                        <td class="text">McDonald's</td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-stats"></i> View Trend</a></td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i> View Map</a></td>
+                    </tr>
+                    <tr data-trend-view="burgerking" data-graph-view="burgerking_graph">
+                        <td class="text-group">Food</td>
+                        <td class="text">Burger King</td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-stats"></i> View Trend</a></td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i> View Map</a></td>
+                    </tr>
+                    <tr data-trend-view="starbucks" data-graph-view="starbucks_graph">
+                        <td class="text-group">Food</td>
+                        <td class="text">Starbucks</td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-stats"></i> View Trend</a></td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i> View Map</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table class="tbl-sent clothing">
+                    <thead>
+                    <thead>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    </thead>
+                    <tbody>
+                    <tr data-trend-view="armani" data-graph-view="armani_graph">
+                        <td class="text-group">Clothing</td>
+                        <td class="text">Armani</td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-stats"></i> View Trend</a></td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i> View Map</a></td>
+                    </tr>
+                    <tr data-trend-view="versace" data-graph-view="versace_graph">
+                        <td class="text-group">Clothing</td>
+                        <td class="text">Versace</td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-stats"></i> View Trend</a></td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i> View Map</a></td>
+                    </tr>
+                    <tr data-trend-view="gucci" data-graph-view="gucci_graph">
+                        <td class="text-group">Clothing</td>
+                        <td class="text">Gucci</td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-stats"></i> View Trend</a></td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i> View Map</a></td>
+                    </tr>
+                    <tr data-trend-view="zara" data-graph-view="zara_graph">
+                        <td class="text-group">Clothing</td>
+                        <td class="text">Zara</td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-stats"></i> View Trend</a></td>
+                        <td class="center"><a href="#" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i> View Map</a></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="graph-wrapper">
+    <div class="graph-inner">
+        <i class="graph-exit glyphicon glyphicon-remove-circle"></i>
+        <h3 class="title">Analyzing Sentiments</h3>
+        <div class="container">
+            <div class="chart" id="chart_line"></div>
+            <div class="chart" id="chart_pie"></div>
+            <div class="chart" id="chart_map"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    google.load('visualization', '1', {packages: ['corechart', 'line','piechart','map']});
+</script>
+
+<script>
+    $(".loader").show();
+
+    $(document).ready(function(){
+        $(".loader").hide();
+        searchSentiments();
+
+        $(".tbl-sent tr .btn").click(function(){
+            $(".loader").show();
+
+            var button = $(this).text();
+            var view = null;
+            if (button.toLowerCase().indexOf("trend") > 0){
+                view = $(this).parent().parent().attr("data-trend-view");
+                $.getJSON('/api/v1/sentiment/'+view,function(result){
+                    drawLineSeries(result);
+                    var vencOptions = "Overall Results";
+                    var k = $("text:contains(" + vencOptions.title + ")").attr({'x':'160', 'y':'20'})
+                    $("text").each(function(e){
+                        var h = $(this).text();
+                        if(h.indexOf("Over")>=0){
+                            $(this).attr('x','180');
+                        }
+                    })
+
+                });
+            }
+            else{
+                view = $(this).parent().parent().attr("data-graph-view");
+                $.getJSON('/api/v1/graph/'+view,function(result){
+                    //drawMap(result);
+                    callBackFunction(result);
+                    var vencOptions = "Overall Results";
+                    var k = $("text:contains(" + vencOptions.title + ")").attr({'x':'160', 'y':'20'})
+                    $("text").each(function(e){
+                        var h = $(this).text();
+                        if(h.indexOf("Over")>=0){
+                            $(this).attr('x','180');
+                        }
+                    })
+
+                });
+            }
+
+
+            var title =  $(this).parent().parent().find(".text").text();
+            $(".graph-wrapper .title").text("Analysing Sentiment for: " + title);
+
+
+        });
+
+        $(".graph-exit").click(function(){$(".graph-wrapper").css("display","none")});
+
+        $(".circle").click(function(){
+            var data = $(this).attr("data-table");
+            $('.tbl-sent').css("display","none");
+            $('.' + data).css("display","inherit");
+        });
+
+        $(".clear-filter").click(function(){
+            $(".tbl-sent").attr("style","none");
+        });
+    });
+
+    function drawLineSeries(rows) {
+        var pv=0;
+        var ng=0;
+        var nu=0;
+
+        $('#chart_map').html('').attr('style','');
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('number','Tweet Volume');
+        data.addColumn('number','Polarity');
+        for(i=0;i<rows.length;i++)
+        {
+            //var d = new Date(rows[i].date);
+
+            data.addRow([i,parseFloat(rows[i].polarity)]);
+
+            if(parseFloat(rows[i].polarity)>0)
+                pv+=1;
+
+            if(parseFloat(rows[i].polarity)<0)
+                ng+=1;
+
+            if(parseFloat(rows[i].polarity)==0)
+                nu+=1;
+        }
+
+        //data.sort([{column: 0, desc:false}]);
+
+        var options = {
+            title: "Sentiment Trending Graph",
+            height:350,
+            legend: { position: 'none' },
+            bar: { groupWidth: "90%" }
+        };
+
+        $('.graph-wrapper').attr('style','')
+        $('.graph-wrapper').css("opacity","0").css("display","inherit").css({ transform: 'scale(0)' });
+
+
+        var chart = new google.charts.Line(document.getElementById('chart_line'));
+        chart.draw(data, google.charts.Line.convertOptions(options));
+
+        //Pie Chart
+        var data = google.visualization.arrayToDataTable([
+            ['Sentiment', 'Percentage'],
+            ['Positive',     pv],
+            ['Negative',  ng],
+            ['Netural',      nu]
+        ]);
+
+        var options = {
+            title: 'Overall Results',
+            pieHole: 0.4,
+            legend: {position: 'bottom', textStyle: {color: '#333333', fontSize: 14}},
+            pieSliceBorderColor : 'transparent',
+            slices: {0: {color: '#00aa00'}, 1: {color: '#cc0000'},2: {color: '#ffaa00'}},
+            pieSliceTextStyle: {
+                color: 'white',
+            },
+            height:350,
+            width:450,
+            titleTextStyle: {fontSize: '40pt' }
+        }
+
+
+        var chart = new google.visualization.PieChart(document.getElementById('chart_pie'));
+        chart.draw(data, options);
+        $(".loader").hide();
+
+        $('.graph-wrapper').transition({ scale: 1,opacity: 1, delay: 100 });
+
+
+    }
+
+    function searchSentiments(){
+        $("#search").keyup(function(e){
+            switch (e.keyCode) {
+                case 9:  // Tab
+                    //console.log('Tab');
+                case 13: // Enter
+                    //console.log('Enter');
+                case 37: // Left
+                    //console.log('Left');
+                case 38: // Up
+                    //console.log('Up');
+                case 39: // Right
+                    //console.log('Right');
+                case 40: // Down
+                    //console.log('Down');
+                    break;
+                default:
+                    filterTable();
+                    break;
+
+            }
+        });
+    }
+
+    function filterTable(){
+        var input = $("#search").val().toLowerCase();
+        if(input.length > 0 ){
+            $(".tbl-sent thead").css("display","none");
+        }
+        else{
+            $(".tbl-sent thead").attr("style","none");
+        }
+
+       $(".tbl-sent tbody tr").attr("style","");
+
+       $(".text").each(function(){
+            var text = $(this).text().toLowerCase();
+            var input = $("#search").val().toLowerCase();
+            if(text.indexOf(input) >= 0){
+                console.log(text, input, text.indexOf(input));
+                //$(".tbl-sent tbody tr").attr("style","");
+            //    $("this").parent().css("display","inherit");
+            }else{
+                $(this).parent().css("display","none");;
+                console.log(text, "not matched");
+            }
+       });
+    }
+
+    function drawMap(rows) {
+        var data = new google.visualization.DataTable();
+        data.addColumn('number','lat');
+        data.addColumn('number','long');
+        for(i=0;i<rows.length;i++)
+        {
+            data.addRow([rows[i].location[1],rows[i].location[0]]);
+        }
+        var options = {
+            maps: 'Map',
+            icons: {
+                default: {
+                    normal: 'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/48/Map-Marker-Ball-Azure-icon.png',
+                    selected: 'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/48/Map-Marker-Ball-Right-Azure-icon.png'
+                }
+            }
+        };
+
+        $('.graph-wrapper').attr('style','')
+        $('.graph-wrapper').css("opacity","0").css("display","inherit").css({ transform: 'scale(0)' });
+
+        $('#chart_line').html('');
+        $('#chart_pie').html('');
+
+        var map = new google.visualization.Map(document.getElementById('chart_map'));
+        map.draw(data, {showTip: true});
+
+        $('.graph-wrapper').transition({ scale: 1,opacity: 1, delay: 200 });
+
+        $(".loader").hide();
+    }
+    function callBackFunction(data)
+    {
+        //$("#data").text(data.rows[0].value);
+        //var long  =data.rows[0].value[0];
+        //var lat = data.rows[0].value[1];
+        drawMap(data);
+    }
+</script>
+
+
+<div id="n" style="">
+
+</div>
+</body>
+</html>

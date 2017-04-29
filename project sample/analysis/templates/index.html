@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter Sentiment Analysis</title>
+    <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="loader">
+    <div class="content">
+        <img src="{{ url_for('static', filename='img/loader.gif') }}">
+        <h4>Loading...please wait!</h4>
+    </div>
+</div>
+
+<h2 class="header">Twitter Sentiment Analysis</h2>
+
+
+<div class="row nopm nav-sec">
+    <div class="container">
+        <div class="col-lg-3 col-lg-offset-1">
+                <h4>Politics</h4>
+                <ul class="ack">
+                    <li><a href="#" class="btn"  data-parent="Politics" data-view="obama">Barak Obama</a></li>
+                    <li><a href="#" class="btn"  data-parent="Politics" data-view="hillary">Hillary Clinton</a></li>
+                    <li><a href="#" class="btn"  data-parent="Politics" data-view="dent">Charlie Dent</a></li>
+                </ul>
+        </div>
+        <div class="col-lg-3">
+            <h4>Food</h4>
+                <ul class="ack">
+                    <li><a href="#" class="btn"  data-parent="Food" data-view="mcdonald">McDonald</a></li>
+                    <li><a href="#" class="btn"  data-parent="Food" data-view="burgerking">Burger King</a></li>
+                    <li><a href="#" class="btn"  data-parent="Food" data-view="kfc">KFC</a></li>
+		                
+</ul>
+            </div>
+<div class="col-lg-3">
+            <h4>Boxing</h4>
+                <ul class="ack">
+                 <li><a href="#" class="btn"  data-parent="Sports" data-view="mayweather">MayWeather</a></li>	
+		<li><a href="#" class="btn"  data-parent="Sports" data-view="manny">Manny Pacquiao</a></li>                
+</ul>
+            </div>
+     
+        <div class="col-lg-3">
+            <h4>Custom</h4>
+            <ul>
+                <li><input type="search" id="search"/></li>
+                <li><button class="btn" id="btn-search">Search</button> </li>
+            </ul>
+
+        </div>
+
+    </div>
+</div>
+<h3 class="cap"></h3>
+<div class="row nopm" style="margin:10px auto ">
+    <div class="col-lg-7">
+        <div id="line" style="margin-top:20px;"></div>
+    </div>
+    <div class="col-lg-5">
+        <div id="pie" style="width: 100%; height: 400px;margin-top:0"></div>
+    </div>
+
+</div>
+
+<script>
+
+    $(document).ready(function(){
+        $(".loader").hide();       
+
+        $(".ack li a").click(function(){
+            $(".loader").show();
+            var view = $(this).attr("data-view");
+            var title = $(this).attr("data-parent");
+
+            $(".cap").html(title + ": "+ $(this).text() + " - Sentiments");
+
+             $.getJSON('/api/v1/politics/'+view,function(result){
+	            drawLineSeries(result);
+	        });
+        });
+
+        $("#btn-search").click(function(){
+            $(".loader").show();
+            //var view = $(this).attr("data-view");
+            //var title = $(this).attr("data-parent");
+
+            //$(".cap").html(title + ": "+ $(this).text() + " - Sentiments");
+            var s = $("#search").val();
+            $.getJSON('/api/v1/custom/'+s,function(result){
+                drawLineSeries(result);
+            });
+        });
+
+     });
+
+</script>
+<script>
+
+    google.load("visualization", "1", {packages:["map","bar", "line", "piechart","corechart"]});
+
+    function drawLineSeries(rows) {
+        var pv=0;
+        var ng=0;
+        var nu=0;
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('number','Tweet Volume');
+        data.addColumn('number','Polarity');
+        for(i=0;i<rows.length;i++)
+        {
+            var d = new Date(parseInt(rows[i].date));
+            var b = new Date(d.getMonth() + "/" + d.getDay() + "/" + d.getFullYear());
+            data.addRow([i,parseFloat(rows[i].polarity)]);
+
+            if(parseFloat(rows[i].polarity)>0)
+                pv+=1;
+
+            if(parseFloat(rows[i].polarity)<0)
+                ng+=1;
+
+            if(parseFloat(rows[i].polarity)==0)
+                nu+=1;
+        }
+        var options = {
+            height:350,
+            legend: { position: 'none' },
+            bar: { groupWidth: "90%" }
+        };
+
+        var chart = new google.charts.Line(document.getElementById('line'));
+        chart.draw(data, google.charts.Line.convertOptions(options));
+
+
+        //Pie Chart
+        var data = google.visualization.arrayToDataTable([
+            ['Sentiment', 'Percentage'],
+            ['Positive',     pv],
+            ['Negative',  ng],
+            ['Netural',      nu]
+        ]);
+
+        var options = {
+            title: 'Overall Results',
+            pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('pie'));
+        chart.draw(data, options);
+
+        $(".loader").hide();
+    }
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+from tweepy import StreamListener
+from tweepy import Stream
+import tweepy
+import json
+import couchdb
+
+# Authentication details. To  obtain these visit dev.twitter.com
+consumer_key = 'ZAnJ1fNvIw9YwuVxYLNBg'
+consumer_secret = 'ZgxdN7y0nsuZ6fF68dnGLyQDts8Jp8N6UuPCls2rBxE'
+access_token = '1362548918-fm65GcNV4yNNL28hWz63ERFjkoJTingjtqIKfU'
+access_token_secret = '4RLjb804t42Z9jfO2M0UhRzYPnppUJZc3wOQxRMG3I'
+
+
+counter = 1
+# This is the listener, resposible for receiving data
+class StdOutListener(tweepy.StreamListener):
+    def on_data(self, data):
+        # Twitter returns data in JSON format - we need to decode it first
+        decoded = json.loads(data)
+
+        try:
+            print("Saving record: ")
+            server = couchdb.Server()
+            db = server['tweet']
+            db.save(decoded)
+            #counter = counter + 1
+        except:
+            print("Error occured")
+            
+        #print ('\n\n')
+        # Also, we convert UTF-8 to ASCII ignoring all bad characters sent by users
+        #print ('@%s: %s' % (decoded['user']['screen_name'], decoded['text'].encode('ascii', 'ignore')))
+        #print ('')
+        return True
+
+    def on_error(self, status):
+        print (status)
+
+if __name__ == '__main__':
+    l = StdOutListener()
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+
+    print ("\n\nHarvesting Boston tweets:\n")
+
+    # There are different kinds of streams: public stream, user stream, multi-user streams
+    # In this example follow #programming tag
+    # For more details refer to https://dev.twitter.com/docs/streaming-apis
+    stream = tweepy.Stream(auth, l)
+    stream.filter(locations=[-71.192,42.225,-70.994,42.422])

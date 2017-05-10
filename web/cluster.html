@@ -84,7 +84,7 @@ map.on('load', function() {
         type: "geojson",
         // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
         // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
-        data: "https://raw.githubusercontent.com/CrazyEric1994/One-Day-in-Melbourne/master/web/jsondata.geojson?token=AD0CtBWKRUqPveIB3ZqE_dnblNFsShyUks5ZHDIfwA%3D%3D",
+        data: "https://raw.githubusercontent.com/CrazyEric1994/One-Day-in-Melbourne/master/web/all_t_geojson.geojson?token=AD0CtAcdEHUGUTBwwutTz6p0yA0iE-XUks5ZHDWxwA%3D%3D",
         cluster: true,
         clusterMaxZoom: 14, // Max zoom to cluster points on
         clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
@@ -163,36 +163,6 @@ map.on('load', function() {
     });
 
 });
-
-var toggleableLayerIds = [ 'contours'];
-
-for (var i = 0; i < toggleableLayerIds.length; i++) {
-    var id = toggleableLayerIds[i];
-
-    var link = document.createElement('a');
-    link.href = '#';
-    link.className = 'active';
-    link.textContent = id;
-
-    link.onclick = function (e) {
-        var clickedLayer = this.textContent;
-        e.preventDefault();
-        e.stopPropagation();
-
-        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
-
-        if (visibility === 'visible') {
-            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-            this.className = '';
-        } else {
-            this.className = 'active';
-            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-        }
-    };
-
-    var layers = document.getElementById('menu');
-    layers.appendChild(link);
-}
 
 
 </script>

@@ -12,9 +12,7 @@ doc.metadata.place.name == 'Sydney')
 
 var hour = new Date(doc.metadata.created_at).getHours();
 var date = new Date(doc.metadata.created_at).toString();
-constraint_2 = (hour >=4) && (hour <=9)
-
-if(constraint_1 && constraint_2)  
+if(constraint_1)  
 emit([doc.metadata.place.name,'all',doc._id,doc.metadata.coordinates.coordinates,date], 1); 
 }''')
 view.sync(db)

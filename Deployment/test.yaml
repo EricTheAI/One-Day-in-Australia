@@ -1,0 +1,14 @@
+---
+
+- hosts: hhhhh
+  become: yes
+  become_user: root
+  tasks:
+  - name: install couchdb 
+    shell: |
+     apt-get update 
+     apt-get install software-properties-common -y 
+     add-apt-repository ppa:couchdb/stable -y 
+     apt-get install couchdb -y 
+     curl -X PUT http://localhost:5984/_config/admins/sourcead -d '"iamfine"'  
+     curl -X PUT http://sourcead:iamfine@127.0.0.1:5984/source 

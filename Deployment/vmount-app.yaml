@@ -1,0 +1,56 @@
+---
+
+# - hosts: localhost
+#   roles:
+#     - andrewrothstein.couchdb
+
+- hosts: localhost
+  remote_user: ubuntu
+  sudo: yes
+
+  tasks:
+# Mount
+  - name: Create a ext4 filesystem on /dev/vdb
+    filesystem: fstype=ext4 dev=/dev/vdb
+  - name: Creates directory 'data'
+    file: path=/mnt/data state=directory 
+  - name: Mount up device
+    mount: name=/mnt/data src=/dev/vdb fstype=ext4 state=present
+  - name: Creates directory 'couchdb'
+    file: path=/mnt/data/couchdb state=directory
+
+# Apps
+  - name: install apache2
+    apt: name=apache2 update_cache=yes state=latest
+  # - name: Remove existing couchdb
+  #   apt: name={{item}} state=absent force=yes
+  #   with_items:
+  #     - couchdb
+  #     - couchdb-bin
+  #     - couchdb-common
+  - name: Installs tools
+    apt: name={{item}} state=present
+    with_items:
+      - vim
+      - python
+      - curl
+      - couchdb
+      - libxml2-dev
+      - libxslt1-dev
+      - python-dev
+  - name: Install pip
+    easy_install: name=pip
+  - name: Install tweepy package
+    pip: name=tweepy
+  - name: Install couchdb package
+    pip: name=couchdb
+  - name: Install novaclient package
+    pip: name=python-novaclient
+  - name: Install python textblob package
+    pip: name=textblob
+  # - name: Install json package
+  #   pip: name=json
+  - name: Install Couchdb
+    script: galaxy-db1.sh
+  - name: Couchdb configuration
+    script: db.sh

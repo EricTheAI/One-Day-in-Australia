@@ -23,3 +23,6 @@ Use the  `install.sh` script to run these plays.
 2. Run  `bash install.sh`, there will be 2 options for choosing.
 3. Enter `1` to launch a new instance, create a volume and attach it, then enter node name, flavor id and volume name.
 4. Or enter `2` to mount volume and install required software packages and dependencies, CouchDB and then automatically configure it.
+
+## Contributors
+

@@ -25,4 +25,4 @@ Use the  `install.sh` script to run these plays.
 4. Or enter `2` to mount volume and install required software packages and dependencies, CouchDB and then automatically configure it.
 
 ## Contributors
-@louiseliang @jiaw8 @FannieHF @poa1006 @CrazyEric1994
+[@louiseliang](https://github.com/louiseliang) [@jiaw8](https://github.com/jiaw8) [@FannieHF](https://github.com/FannieHF) [@poa1006](https://github.com/poa1006) [@CrazyEric1994](https://github.com/CrazyEric1994)

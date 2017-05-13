@@ -6,7 +6,7 @@
 # Fan Hong / hongf / 795265
 
 ---
-- hosts: localhost
+- hosts: '{{hosts}}'
   sudo: yes
   tasks:
     - name: install apache2

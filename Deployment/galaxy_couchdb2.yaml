@@ -7,6 +7,6 @@
 
 ---
 
-- hosts: localhost
+- hosts: '{{hosts}}'
   roles:
     - guillaumededrie.couchdb

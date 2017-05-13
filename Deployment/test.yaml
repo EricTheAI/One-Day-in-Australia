@@ -7,7 +7,7 @@
 
 ---
 
-- hosts: hhhhh
+- hosts: '{{hosts}}'
   become: yes
   become_user: root
   tasks:

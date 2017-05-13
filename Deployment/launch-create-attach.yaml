@@ -7,7 +7,7 @@
 
 ---
 
-- hosts: localhost
+- hosts: '{{hosts}}'
   connection: local
   gather_facts: False
   sudo: True

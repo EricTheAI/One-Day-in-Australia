@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <link rel='stylesheet' href='stylesheets/nav.css' />
+    <style>
+        body { 
+            margin:0; 
+            padding:0; 
+        }
+        #menu {
+            top: 10px;
+            right: 10px;
+            border-radius: 5px;
+            width: 120px;
+            border: 0px solid rgba(0,0,0,0.4);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        #menu a {
+            font-size: 16px;
+            display: block;
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0,0,0,0.25);
+            text-align: center;
+            background-color: rgba(0,0,0,0); 
+            color: black;
+            border-radius: 5px;
+            text-align: left;
+            backdrop-filter: blur(15px);
+            font-family:'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
+
+        #menu a:last-child {
+            border: none;
+        }
+
+        #menu a:hover {
+            color:firebrick;
+        }
+
+        #menu a.active {
+        }
+
+        #menu a.active:hover {
+            color:firebrick;
+        }
+    </style>
+</head>
+<body>
+  <div style="text-align:center">
+    <ul>
+        <li><a href="#"><span></span></a></li>
+        <li><a href="index.html">Tweet Overview</a></li>
+        <li><a href="melb_punch.html">Melb-Punch</a></li>
+        <li><a href="syd_punch.html">Syd-Punch</a></li>
+        <li><a href="mel_day.html">Melb-Day</a></li>
+        <li><a href="syd_day.html"  style='background-color:#252525'>Syd-Day</a></li>
+        <li><a href="3d.html">3D Model</a>
+    </ul>
+  </div>
+
+<nav id="menu"></nav>
+<div>
+    <iframe style="overflow:visible;width:100%;height:900px;"  src="https://posung.carto.com/builder/af85fae6-3593-11e7-957e-0e05a8b3e3d7/embed" ></iframe>
+    </div>
+</body>
+</html>
